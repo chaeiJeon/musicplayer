@@ -12,9 +12,8 @@ export default class TopMusics {
     }
     bindEvents(){
         this.rootElement.addEventListener("click",(event)=>{
-            const {target} = event.target;
+            const {target} = event;
             const isControllerButton = target.tagName === "BUTTON";
-
             if(!isControllerButton){
                 return;
             }
@@ -58,7 +57,7 @@ export default class TopMusics {
         target.classList.replace('icon-pause','icon-play');
     }
 
-    requestAddPlayList(){
+    requestAddPlayList(target){
         //플레이리스트에 추가를 요청, +버튼 누르면 추가되기
         const controller = target.parentElement;
         const {index:musicIndex} = controller.dataset;

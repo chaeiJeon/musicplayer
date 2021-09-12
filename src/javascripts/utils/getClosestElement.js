@@ -5,8 +5,6 @@ const getClosestElement = (element, selector)=>{
         //앞에 .이 붙어있는가=>그럼 클래스 선택자
         evaluate = element.classList.contains(selector);
     }else{
-        console.log(element.tagName);
-        console.log(selector.toUpperCase());
         //클래스 선택자가 주어진게 아니다 => 태그 선택자
         evaluate = element.tagName === selector.toUpperCase();
     }
@@ -14,7 +12,7 @@ const getClosestElement = (element, selector)=>{
     if(evaluate){
         return element;
     }
-    return getClosestElement(element.parseElement, selector);
+    return getClosestElement(element.parentElement, selector);
 }
 
 export default getClosestElement;
