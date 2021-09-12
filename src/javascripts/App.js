@@ -1,4 +1,4 @@
-import { Intro, TabButtons, TopMusics, SearchView, PlayList } from './components/index.js';
+import { Intro, TabButtons, TopMusics, SearchView, PlayList, PlayView } from './components/index.js';
 import { fetchMusics } from '../APIs/index.js';
 import removeAllChildNodes from './utils/removeAllChildNodes.js';
 
@@ -18,6 +18,7 @@ export default class App {
         this.topMusics = new TopMusics();
         this.searchView = new SearchView();
         this.playList = new PlayList();
+        this.playView = new PlayView();
 
         this.mainViewComponents = [this.topMusics, this.playList, this.searchView];
         this.bindEvents();
@@ -34,10 +35,10 @@ export default class App {
         });
         //탑뮤직 컴포넌트 이벤트
         this.topMusics.on('play', (payload) => {
-            // this.playView.playMusic(payload);
+            this.playView.playMusic(payload);
         });
         this.topMusics.on('pause', () => {
-            // this.playView.pause()
+            this.playView.pause()
         });
         this.topMusics.on('addPlayList', (payload) => {
             const { musics, musicIndex } = payload;
@@ -45,12 +46,12 @@ export default class App {
         });
         //플레이 리스트에서 음악요청이 오면 플레이뷰에게 음악 플레이 요청
         this.playList.on('play',(payload)=>{
-            // this.playView.playMusic(payload);
-            // this.playView.show();
+            this.playView.playMusic(payload);
+            this.playView.show();
         });
         //플레이 리스트에서 음악요청이 오면 플레이뷰에게 음악 플레이 멈춤
         this.playList.on('pause', ()=>{
-            // this.playView.pause();
+            this.playView.pause();
         });
         this.searchView.on('searchMusic', (query) => {
             if (!query) {
@@ -70,15 +71,19 @@ export default class App {
             this.searchView.setSearchResult(searchedMusics);
         });
         this.searchView.on('play', (payload) => {
-            // this.playView.playMusic(payload);
+            this.playView.playMusic(payload);
         });
         this.searchView.on('pause', () => {
-            // this.playView.pause()
+            this.playView.pause()
         });
         this.searchView.on('addPlayList', (payload) => {
             const { musics, musicIndex } = payload;
             this.playList.add(musics[musicIndex]);
         });
+        this.playView.on('backward',()=>{this.playList.playPrev()});
+        this.playView.on('forward',()=>{this.playList.playNext()});
+        //random인지 repeat인지 인자를 넘겨줘서 해결하게 함
+        this.playView.on('musicEnded',(payload)=>{this.playList.playNext(payload)});
     }
     async fetchMusics() {
         const responsebody = await fetchMusics();
