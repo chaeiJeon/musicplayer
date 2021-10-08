@@ -60,7 +60,7 @@ export default class SearchView {
         //음악 재생을 App.js에 요청
         const controller = target.parentElement;
         const {index:musicIndex} = controller.dataset;
-        const payload = {musics:this.musics, musicIndex};
+        const payload = {musics:this.searchedMusics, musicIndex};
         this.emit('play', payload);
         this.renderStopAll();
         target.classList.replace('icon-play','icon-pause');
@@ -70,11 +70,11 @@ export default class SearchView {
         this.emit('pause'); //App.js 에 전달
         target.classList.replace('icon-pause','icon-play');
     }
-    requestAddPlayList(){
+    requestAddPlayList(target){
         //플레이리스트에 추가를 요청, +버튼 누르면 추가되기
         const controller = target.parentElement;
         const {index:musicIndex} = controller.dataset;
-        const payload = {musics:this.musics, musicIndex};
+        const payload = {musics:this.searchedMusics, musicIndex};
         this.emit('addPlayList', payload);
     }
     setSearchResult(musicList = []){

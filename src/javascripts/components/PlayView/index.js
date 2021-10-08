@@ -9,7 +9,7 @@ export default class PlayView {
     }
     static createRenderElement(){
         const playViewWrapper = document.createElement('article');
-        playViewWrapper.classList.add('play-View');
+        playViewWrapper.classList.add('play-view');
         return playViewWrapper;
     }
     bindEvents(){
@@ -36,7 +36,7 @@ export default class PlayView {
     }
     playMusic(payload){
         this.pause();
-        console.log(payload);
+        // 만약 새로운 음악이 들어왔을 경우에는 페이로드를 통해 값이 왔다는 것, 페이로드가 없다면 기존음악을 껏다 켰다 한것으로 간주
         if(payload){
             const {musics, musicIndex} = payload;
             this.audio.src = musics[musicIndex].source;
@@ -50,20 +50,24 @@ export default class PlayView {
     }
     renderMusicContainer(){
         const {artists, cover, title} = this.playViewMusic;
-        this.rootElement.innerHtml = `
+
+        this.rootElement.innerHTML = `
             <div class="play-view-container">
                 <h2 class="invisible-text">Play View</h2>
                 <button class="back-button">
                     <i class="icon-controller-back"></i>
                 </button>
                 <div class="cover-wrapper">
-                    <img src="https://localhost:3000${cover}"/>
+                    <img src="http://localhost:3000${cover}" />
+                </div>
+                <div class="music-information">
+                    <h3 class="music-title">${title}</h3>
                     <span class="music-artist-name">${artists.join(', ')}</span>
-                <div>
+                </div>
                 <div class="play-view-controller">
                     <div class="controller-container">
-                        <button class="controller-button control-repeat ${this.repeat?'on':''}">
-                            <i class="icon-controller-repeat"></i.
+                        <button class="control-button control-repeat ${this.repeat ? 'on' : ''}">
+                            <i class="icon-controller-repeat"></i>
                         </button>
                         <button class="control-button control-backward">
                             <i class="icon-controller-backward"></i>
@@ -71,13 +75,13 @@ export default class PlayView {
                         <button class="control-button control-play hide">
                             <i class="icon-controller-play"></i>
                         </button>
-                        <button> class="control-button control-pause">
+                        <button class="control-button control-pause">
                             <i class="icon-controller-pause"></i>
                         </button>
                         <button class="control-button control-forward">
                             <i class="icon-controller-forward"></i>
                         </button>
-                        <button class="control-button control-rotate" ${this.random?'on':''}>
+                        <button class="control-button control-rotate" ${this.random ? 'on' : ''}>
                             <i class="icon-controller-rotate"></i>
                         </button>
                     </div>
@@ -87,21 +91,21 @@ export default class PlayView {
                             <div class="current-time">1:43</div>
                             <div class="end-time">3:16</div>
                         </div>
-                    </div
+                    </div>
                 </div>
+            </div>
         `;
         const backButton = this.rootElement.querySelector('.back-button');
         const playButton = this.rootElement.querySelector('.control-play');
         const pauseButton = this.rootElement.querySelector('.control-pause');
-        const backward = this.rootElement.querySelector('.control-forward');
+        const backward = this.rootElement.querySelector('.control-backward');
         const forward = this.rootElement.querySelector('.control-forward');
         const repeat = this.rootElement.querySelector('.control-repeat');
         const random = this.rootElement.querySelector('.control-rotate');
         const progress = this.rootElement.querySelector('.progress');
-
         playButton.addEventListener('click', ()=>{
             this.playMusic();
-            playButtton.classList.add('hide');
+            playButton.classList.add('hide');
             pauseButton.classList.remove('hide');
         });
         pauseButton.addEventListener('click',()=>{
@@ -119,7 +123,7 @@ export default class PlayView {
         });
         random.addEventListener('click',()=>{
             this.random = !this.random;
-            if(this.repeat){
+            if(this.random){
                 random.classList.add('on');
             }else{
                 random.classList.remove('on');
@@ -137,7 +141,7 @@ export default class PlayView {
         progress.addEventListener('change',(event)=>{
             const targetTime = this.audio.duration*Number(event.target.value)/1000;
             this.audio.currentTime = targetTime;
-        })
+        });
     }
     show(){
         document.body.append(this.rootElement);

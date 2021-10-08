@@ -34,6 +34,7 @@ export default class PlayList {
         }
         if(payload){
             const {repeat, random} = payload;
+            console.log("repeat , random : ",repeat, random);
             if(!random && !repeat && isMusicIndexEnd){
                 return;
             }
@@ -45,6 +46,7 @@ export default class PlayList {
         this.playMusicItem(nextIndex);
     }
     playPrev(){
+        console.log("playPrev");
         let currentIndex = this.musicList.findIndex(music=>music.playing);
         if(currentIndex <=0 ){
             currentIndex = this.musicList.length;
@@ -68,6 +70,7 @@ export default class PlayList {
         if (!requestPlay){
             listItemElement.classList.add('on');
             this.musicList[musicIndex].playing = true;
+            console.log("requestplay");
             this.emit('play', {musics: this.musicList, musicIndex});
         }else{
             listItemElement.classList.add('on');

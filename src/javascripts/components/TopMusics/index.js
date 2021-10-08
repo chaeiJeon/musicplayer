@@ -44,7 +44,6 @@ export default class TopMusics {
     }
     requestPlay(target){
         //음악 재생을 App.js에 요청
-        console.log(target);
         const controller = target.parentElement;
         const {index:musicIndex} = controller.dataset;
         const payload = {musics:this.musics, musicIndex};
